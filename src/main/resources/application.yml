@@ -19,7 +19,7 @@ spring:
       fail-on-empty-beans: false
 server:
   port: 8080
-  address: localhost
+  address: 100.42.184.158
 
 storage:
   location: src/main/resources/static/uploads/
