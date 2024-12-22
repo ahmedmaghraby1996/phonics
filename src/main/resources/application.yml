@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: phonics
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/phonics?useSSL=false
+    username: root
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    database: mysql
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+server:
+  port: 8080
+  address: localhost
+
+storage:
+  location: src/main/resources/static/uploads/
+
