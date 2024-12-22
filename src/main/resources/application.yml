@@ -4,8 +4,8 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/phonics?useSSL=false
-    username: root
-    password:
+    username: phonics_user
+    password: new_password
   jpa:
     hibernate:
       ddl-auto: update
