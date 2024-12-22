@@ -3,7 +3,7 @@ spring:
     name: phonics
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/phonics?useSSL=false
+    url: jdbc:mysql://localhost:3306/phonics_db?useSSL=false
     username: phonics_user
     password: new_password
   jpa:
