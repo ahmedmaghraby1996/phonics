@@ -51,6 +51,7 @@ public class AuthController {
             })
     @PostMapping(value = "/login")
     public ActionResponse<LoginRes> login(@RequestBody LoginRequest loginRequest) {
+        System.out.println("This sentence will work!");
         return new ActionResponse<>(authService.login(loginRequest));
     }
 

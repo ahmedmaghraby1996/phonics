@@ -31,4 +31,5 @@ build/
 
 ### VS Code ###
 .vscode/
-src/main/resources
+# Ignore application.yml
+src/main/resources/application.yml

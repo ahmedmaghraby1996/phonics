@@ -82,7 +82,8 @@ public class AuthService {
         if (timeDiff < (5 * 60 * 1000)) {
             User user = request.getOtpType()==OtpType.EMAIL? userRepository.findUserByEmail(request.getUserName()):userRepository.findUserByPhone(request.getUserName());
             jwtToken = this.generateToken(user);
-
+            user.setEnabled(true);
+            userRepository.save(user);
         } else throw new BadRequestException("Otp Expired");
 
         return new LoginRes(jwtToken);
