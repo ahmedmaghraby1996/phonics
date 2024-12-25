@@ -49,6 +49,8 @@ public class AuthService {
         User user = new User();
         if (request.getOtpType().equals(OtpType.EMAIL)) {
             user = userRepository.findUserByEmail(request.getUserName());
+
+            System.out.println(user);
         } else if (request.getOtpType().equals(OtpType.PHONE)) {
             user = userRepository.findUserByPhone(request.getUserName());
         }
