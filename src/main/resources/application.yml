@@ -1,4 +1,8 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 15MB
+      max-request-size: 15MB
   application:
     name: phonics
   datasource:
@@ -19,7 +23,7 @@ spring:
       fail-on-empty-beans: false
 server:
   port: 8080
-  address: 100.42.184.158
+  address: localhost
 
 storage:
   location: src/main/resources/static/uploads/

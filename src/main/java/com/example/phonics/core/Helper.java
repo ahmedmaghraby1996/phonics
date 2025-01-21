@@ -19,6 +19,6 @@ public class Helper {
 
 
 
-        return serverConfig.getAddress()+"/"+ path;
+        return serverConfig.getAddress()+":"+serverConfig.getPort()+"/"+ path;
     }
 }

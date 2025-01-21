@@ -2,7 +2,9 @@ package com.example.phonics.controller;
 
 import com.example.phonics.entity.Lesson;
 import com.example.phonics.entity.Level;
+import com.example.phonics.entity.enums.LevelType;
 import com.example.phonics.exception.DuplicateEntryException;
+import com.example.phonics.model.request.LevelRequest;
 import com.example.phonics.model.response.ActionResponse;
 import com.example.phonics.service.LevelService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,22 +37,22 @@ public class levelController {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping(value = "/admin/level", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
 
-    public ResponseEntity<Level> insertLevel(@Valid @RequestParam("file") MultipartFile file, @RequestParam("title") String title) {
-        Level checkLevel= levelService.findLevelByTitle(title);
+    public ResponseEntity<Level> insertLevel(@Valid  @ModelAttribute LevelRequest request) {
+        Level checkLevel= levelService.findLevelByTitle(request.getTitle());
         if(checkLevel!=null) {
             throw new DuplicateEntryException("title already exists");
         }
-        Level level = levelService.insertLevel(file, title);
+        Level level = levelService.insertLevel(request);
         return ResponseEntity.ok(level);
     }
 
 
-    @GetMapping(value = "/level")
+        @GetMapping(value = "/level")
 
-    public ActionResponse<List<Level>> fetchLevels() {
-        List<Level> levels = levelService.getAllLevels();
-        return new ActionResponse<>(levels);
-    }
+        public ActionResponse<List<Level>> fetchLevels(@RequestParam(required = false)LevelType type) {
+            List<Level> levels = levelService.getAllLevels(type);
+            return new ActionResponse<>(levels);
+        }
 
     @GetMapping(value = "/level/{level_id}/lessons")
 

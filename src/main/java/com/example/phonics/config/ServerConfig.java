@@ -13,7 +13,7 @@ import javax.annotation.PostConstruct;
 @Data
 public class ServerConfig {
     private String address;
-
+    private int port;
     @Value("${storage.location}")
     private String storageLocation;
     @PostConstruct
