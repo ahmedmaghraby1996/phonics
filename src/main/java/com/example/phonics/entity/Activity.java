@@ -15,13 +15,13 @@ public class Activity  extends  AuditableEntity{
     private  String answer;
     private String sound;
 
-    private List<String> word;
+    private String word;
 
 
-    private List<String> choices;
+    private String choices;
 
 
-    private List<String> missingLetters;
+    private String missingLetters;
     @Transient
     private boolean isCompleted;
 
