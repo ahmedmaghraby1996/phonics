@@ -1,23 +1,24 @@
 package com.example.phonics.service;
 
-import com.example.phonics.config.ServerConfig;
 import com.example.phonics.core.Helper;
+import com.example.phonics.entity.Activity;
 import com.example.phonics.entity.Lesson;
 import com.example.phonics.entity.Level;
+import com.example.phonics.entity.User;
 import com.example.phonics.entity.enums.LevelType;
+import com.example.phonics.exception.BadRequestException;
+import com.example.phonics.exception.NotFoundException;
 import com.example.phonics.model.request.LevelRequest;
+import com.example.phonics.repository.ActivityRepository;
 import com.example.phonics.repository.LessonRepository;
 import com.example.phonics.repository.LevelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +33,9 @@ public class LevelService {
     private FileStorageService fileStorageService;
     @Autowired
     private LessonRepository lessonRepository;
+
+    @Autowired
+    private ActivityRepository activityRepository;
 
     @Autowired
     private Helper helper;
@@ -86,5 +90,50 @@ public class LevelService {
         }).collect(Collectors.toList());
     }
 
-    public  List<Lesson> findLessonsByLevel(long id) {return  lessonRepository.findByLevelId(id);}
+    public  List<Lesson> findLessonsByLevel(long id) { List<Lesson> lesson=  lessonRepository.findByLevelId(id);
+    lesson.forEach(l->{l.setSound(helper.toUrl(l.getSound())); l.setImage(helper.toUrl(l.getImage()));});
+        return  lesson;
+    }
+
+    public List<Activity> findActivitiesByLevel(long id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        List<Activity> activities = activityRepository.findByLevelId(id);
+        activities.forEach(a -> {
+
+            a.setSound(helper.toUrl(a.getSound()));
+            a.setImage(helper.toUrl(a.getImage()));
+            // Check if the user has completed the activity
+            if (a.getUsers().contains(user)) {
+                a.setCompleted(true); // Assuming the Activity entity has a 'completed' field
+            } else {
+                a.setCompleted(false);
+            }
+        });
+
+        return activities;
+    }
+
+    public  Activity compeleteActivity(long id){
+     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+     User user = (User) authentication.getPrincipal();
+     System.out.println(user.getId());
+        Optional<Activity> optionalActivity =  activityRepository.findById(id);
+        if (!optionalActivity.isPresent()) {
+            throw new NotFoundException("Activity not found");
+        }
+     // Add the user to the activity's list of users
+     Activity activity = optionalActivity.get();
+     System.out.println(activity.getUsers());
+     if (!activity.getUsers().contains(user)) {
+         activity.getUsers().add(user);
+     } else {
+         throw new BadRequestException("User is already part of this activity");
+     }
+
+     // Save the updated activity
+     activityRepository.save(activity);
+
+     return activity;
+ }
 }

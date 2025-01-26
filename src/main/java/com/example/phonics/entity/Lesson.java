@@ -19,4 +19,5 @@ public class Lesson extends AuditableEntity {
     @JoinColumn(name="level_id")
     @JsonIgnore
     private Level level;
+
 }

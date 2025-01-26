@@ -22,11 +22,8 @@ public class LevelRequest {
     private MultipartFile letterSound ;
     private MultipartFile lessonImage ;
     private String description;
-
-
     @NotBlank(message = "Title is mandatory")
     private String title;
-
     @NotNull(message = "Type is mandatory")
     private LevelType type;
 
