@@ -29,13 +29,8 @@ public class Activity  extends  AuditableEntity{
 
 
     @OneToMany
-    @JoinTable(
-            name = "activity_users", // Name of the join table
-            joinColumns = @JoinColumn(name = "activity_id"), // Column in the join table referencing Activity
-            inverseJoinColumns = @JoinColumn(name = "user_id") // Column in the join table referencing User
-    )
     @JsonIgnore
-    private List<User> users;
+    private  List<User> users;
 
     @Column(columnDefinition = "ENUM('MissingLetter', 'LongShort') DEFAULT 'MissingLetter'")
     @Enumerated(EnumType.STRING)
