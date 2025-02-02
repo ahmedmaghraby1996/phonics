@@ -87,6 +87,14 @@ public class levelController {
         return new ActionResponse<Lesson>(lesson);
     }
 
+    @PostMapping(value = "/complete/tracing/{level_id}")
+
+    public ActionResponse<Level> completeTracing(@Parameter @PathVariable("level_id") long levelId) {
+        Level level = levelService.compeleteTracing(levelId);
+        return new ActionResponse<Level>(level);
+    }
+
+
 
 
 }

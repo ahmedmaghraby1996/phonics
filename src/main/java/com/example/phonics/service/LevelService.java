@@ -193,7 +193,7 @@ public class LevelService {
 
         Optional<Level> optionalLevel=  levelRepository.findById(id);
         if (!optionalLevel.isPresent()) {
-            throw new NotFoundException("Lesson not found");
+            throw new NotFoundException("Level not found");
         }
         // Add the user to the activity's list of users
         Level level = optionalLevel.get();
