@@ -70,4 +70,5 @@ public class User extends AuditableEntity implements UserDetails  {
     public boolean isEnabled() {
         return enabled;
     }
+
 }
