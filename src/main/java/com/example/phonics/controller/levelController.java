@@ -80,6 +80,13 @@ public class levelController {
        return new ActionResponse<Activity>(activity);
     }
 
+    @PostMapping(value = "/complete/lesson/{lesson_id}")
+
+    public ActionResponse<Lesson> completeLesson(@Parameter @PathVariable("lesson_id") long lessonId) {
+        Lesson lesson = levelService.compeleteLesson(lessonId);
+        return new ActionResponse<Lesson>(lesson);
+    }
+
 
 
 }

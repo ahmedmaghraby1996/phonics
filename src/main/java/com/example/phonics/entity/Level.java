@@ -21,6 +21,15 @@ public class Level extends AuditableEntity {
     private  String lessonImage;
     private  String letterImage;
     private  String letterSound;
+
+    @OneToMany
+    @JsonIgnore
+    private List<User> users;
+    @Transient
+    private boolean isCompleted;
+    @Transient
+    private boolean isTracingCompleted;
+
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "ENUM('LEVEL', 'LETTER')")
     private LevelType type;
@@ -28,9 +37,7 @@ public class Level extends AuditableEntity {
     @JsonIgnore
     @OneToMany(mappedBy = "level",fetch = FetchType.LAZY)
     private List<Lesson> lessons;
-    @JsonIgnore
-    @OneToMany(mappedBy = "level",fetch = FetchType.LAZY)
-    private List<Tracing> tracings;
+
     @JsonIgnore
     @OneToMany(mappedBy = "level",fetch = FetchType.LAZY)
     private List<Activity> activities;

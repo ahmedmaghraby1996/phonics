@@ -75,23 +75,50 @@ public class LevelService {
     }
     public List<Level> getAllLevels(LevelType type) {
         List<Level> levels = levelRepository.findByType(type);
-
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
         // Map the logo paths to full URLs
         return levels.stream().map(level -> {
             String fullLogoUrl = helper.toUrl(level.getLogo());
             level.setLogo(fullLogoUrl);
+            // Check if the user has completed the activity
+            if (level.getUsers().contains(user)) {
+                level.setTracingCompleted(true); // Assuming the Activity entity has a 'completed' field
+            } else {
+                level.setTracingCompleted(false);
+            }
             String letterSoundUrl = helper.toUrl(level.getLetterSound());
             level.setLetterSound(letterSoundUrl);
             String lessonImageUrl = helper.toUrl(level.getLessonImage());
             level.setLessonImage(lessonImageUrl);
             String letterSound = helper.toUrl(level.getLetterSound());
             level.setLetterSound(letterSound);
+            // Check if the user has completed all activities and lessons
+            boolean allActivitiesCompleted = level.getActivities().stream()
+                    .allMatch(activity -> activity.getUsers().contains(user));
+
+            boolean allLessonsCompleted = level.getLessons().stream()
+                    .allMatch(lesson -> lesson.getUsers().contains(user));
+            if(level.getType()==LevelType.LEVEL){
+            level.setCompleted(allActivitiesCompleted && allLessonsCompleted);}
+            else
+            {
+                level.setCompleted(allActivitiesCompleted && allLessonsCompleted && level.isTracingCompleted());
+            }
             return level;
         }).collect(Collectors.toList());
     }
 
     public  List<Lesson> findLessonsByLevel(long id) { List<Lesson> lesson=  lessonRepository.findByLevelId(id);
-    lesson.forEach(l->{l.setSound(helper.toUrl(l.getSound())); l.setImage(helper.toUrl(l.getImage()));});
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+    lesson.forEach(l->{l.setSound(helper.toUrl(l.getSound())); l.setImage(helper.toUrl(l.getImage()));
+
+        if (l.getUsers().contains(user)) {
+            l.setCompleted(true); // Assuming the Activity entity has a 'completed' field
+        } else {
+            l.setCompleted(false);
+        }});
         return  lesson;
     }
 
@@ -136,4 +163,50 @@ public class LevelService {
 
      return activity;
  }
+
+    public  Lesson compeleteLesson(long id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+
+        Optional<Lesson> optionalLesson=  lessonRepository.findById(id);
+        if (!optionalLesson.isPresent()) {
+            throw new NotFoundException("Lesson not found");
+        }
+        // Add the user to the activity's list of users
+        Lesson lesson = optionalLesson.get();
+
+        if (!lesson.getUsers().contains(user)) {
+            lesson.getUsers().add(user);
+        } else {
+            throw new BadRequestException("User is already part of this activity");
+        }
+
+        // Save the updated activity
+        lessonRepository.save(lesson);
+
+        return lesson;
+    }
+
+    public  Level compeleteTracing(long id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+
+        Optional<Level> optionalLevel=  levelRepository.findById(id);
+        if (!optionalLevel.isPresent()) {
+            throw new NotFoundException("Lesson not found");
+        }
+        // Add the user to the activity's list of users
+        Level level = optionalLevel.get();
+
+        if (!level.getUsers().contains(user)) {
+            level.getUsers().add(user);
+        } else {
+            throw new BadRequestException("User is already part of this activity");
+        }
+
+        // Save the updated activity
+        levelRepository.save(level);
+
+        return level;
+    }
 }
