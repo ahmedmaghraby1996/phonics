@@ -24,8 +24,17 @@ public class Lesson extends AuditableEntity {
     @Transient
     private boolean isCompleted;
 
+
+
+
     @OneToMany
+    @JoinTable(
+            name = "lesson_users", // Name of the join table
+            joinColumns = @JoinColumn(name = "lesson_id"), // Column in the join table referencing Activity
+            inverseJoinColumns = @JoinColumn(name = "user_id") // Column in the join table referencing User
+    )
     @JsonIgnore
     private List<User> users;
+
 
 }

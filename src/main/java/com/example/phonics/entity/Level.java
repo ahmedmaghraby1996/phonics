@@ -23,6 +23,11 @@ public class Level extends AuditableEntity {
     private  String letterSound;
 
     @OneToMany
+    @JoinTable(
+            name = "level_users", // Name of the join table
+            joinColumns = @JoinColumn(name = "level_id"), // Column in the join table referencing Activity
+            inverseJoinColumns = @JoinColumn(name = "user_id") // Column in the join table referencing User
+    )
     @JsonIgnore
     private List<User> users;
     @Transient
