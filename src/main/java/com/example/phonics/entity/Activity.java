@@ -3,14 +3,18 @@ package com.example.phonics.entity;
 import com.example.phonics.entity.enums.ActivityType;
 import com.example.phonics.entity.enums.LevelType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.vladmihalcea.hibernate.type.json.JsonType;
 import lombok.Data;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "activity")
+@TypeDef(name = "json", typeClass = JsonType.class) // ✅ Correct JSON type definition
+
 @Data
 public class Activity  extends  AuditableEntity{
     private String image;
