@@ -40,13 +40,22 @@ public class UserDetailsServiceImpl implements UserDetailsService
 return request;
     }
     public UpdateProfileRequest updateProfile(UpdateProfileRequest request) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal();
-        user.setEmail(request.getEmail());
-        user.setFirstName(request.getFirstName());
-userRepository.save(user);
-return request;
+        if (request != null) {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User user = (User) authentication.getPrincipal();
+
+            if (request.getEmail() != null) {
+                user.setEmail(request.getEmail());
+            }
+            if (request.getFirstName() != null) {
+                user.setFirstName(request.getFirstName());
+            }
+
+            userRepository.save(user);
+        }
+        return request;
     }
+
     public boolean deleteAccount(){
         try{
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

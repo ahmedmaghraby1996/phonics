@@ -31,14 +31,13 @@ public class JwtService {
     public String createToken(User user , Map<String , Object> extraClaims) {
 
 
-        return Jwts.builder()
-                .setClaims(extraClaims)
-                .setSubject(user.getEmail())
-                .setExpiration(new Date(System.currentTimeMillis() + accessTokenValidity))
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .signWith(SignatureAlgorithm.HS256, secret_key)
-                .compact();
-    }
+            return Jwts.builder()
+                    .setClaims(extraClaims)
+                    .setSubject(String.valueOf(user.getId()))
+                    .setIssuedAt(new Date(System.currentTimeMillis()))
+                    .signWith(SignatureAlgorithm.HS256, secret_key)
+                    .compact();
+        }
 
     private Claims parseJwtClaims(String token)
     {
