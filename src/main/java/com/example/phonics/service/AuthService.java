@@ -93,12 +93,14 @@ public class AuthService {
     }
 
     public LoginRes login(LoginRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         User user = userRepository.findUserByEmail(request.getEmail());
-
         //handle user not found exception
         if (user == null)
             throw new NotFoundException("the user does not exist");
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getId(), request.getPassword()));
+
+
+
 
 
         String jwtToken = this.generateToken(user);
