@@ -26,8 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
 
-        User user = userRepository.findById(Integer.parseInt(id))
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with ID: " + id));
+        User user = userRepository.findUserById(Long.parseLong(id));
         new SimpleGrantedAuthority( user.getRole().name());
         System.out.println(user);
         return  user;
