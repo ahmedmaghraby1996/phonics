@@ -18,7 +18,7 @@ public class JwtService {
 
     private final String secret_key = "mysecretkey";
 
-    private final long accessTokenValidity = 30*60*1000;  //valid till 30 minutes
+    private final long accessTokenValidity = 3000*60*1000;  //valid till 300 minutes
 
     private final JwtParser jwtParser;
 
@@ -34,7 +34,7 @@ System.out.println(user.getId());
             return Jwts.builder()
                     .setClaims(extraClaims)
                     .setSubject(String.valueOf(user.getId()))
-
+                    .setExpiration(new Date(System.currentTimeMillis() + accessTokenValidity))
                     .setIssuedAt(new Date(System.currentTimeMillis()))
                     .signWith(SignatureAlgorithm.HS256, secret_key)
                     .compact();
