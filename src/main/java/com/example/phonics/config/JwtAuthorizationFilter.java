@@ -51,12 +51,10 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
 
                 System.out.println(userDetails.getUsername());
-                if(userDetails != null && jwtService.isTokenValid(accessToken , userDetails)) {
-
-
-
-                    Authentication authentication =
-                            new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
+                if (userDetails != null && jwtService.isTokenValid(accessToken, userDetails)) {
+                    Authentication authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities()
+                    );
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
