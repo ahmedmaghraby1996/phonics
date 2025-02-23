@@ -33,11 +33,10 @@ public class UserDetailsServiceImpl implements UserDetailsService
         // Assign roles correctly
         List<GrantedAuthority> authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name()));
 
-        // Debugging log
-        System.out.println("✅ User found: " + user.getEmail());
+
 
         return new org.springframework.security.core.userdetails.User(
-                user.getEmail(), // Username (can be email or anything unique)
+                String.valueOf(user.getId()),
                 user.getPassword(), // Hashed password
                 authorities // Roles
         );
