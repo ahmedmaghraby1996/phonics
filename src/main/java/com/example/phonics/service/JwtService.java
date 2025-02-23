@@ -34,6 +34,7 @@ System.out.println(user.getId());
             return Jwts.builder()
                     .setClaims(extraClaims)
                     .setSubject(String.valueOf(user.getId()))
+                    .setExpiration(new Date(System.currentTimeMillis() + accessTokenValidity))
                     .setIssuedAt(new Date(System.currentTimeMillis()))
                     .signWith(SignatureAlgorithm.HS256, secret_key)
                     .compact();
