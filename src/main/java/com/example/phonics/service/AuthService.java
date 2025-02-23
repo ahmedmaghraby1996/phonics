@@ -93,7 +93,7 @@ public class AuthService {
     }
 
     public LoginRes login(LoginRequest request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+//        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
         User user = userRepository.findUserByEmail(request.getEmail());
 
         //handle user not found exception

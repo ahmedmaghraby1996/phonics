@@ -50,7 +50,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
 
-                System.out.println(userDetails);
+                System.out.println(userDetails.getUsername());
                 if(userDetails != null && jwtService.isTokenValid(accessToken , userDetails)) {
 
 

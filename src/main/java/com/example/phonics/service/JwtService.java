@@ -29,7 +29,7 @@ public class JwtService {
 
     //this
     public String createToken(User user , Map<String , Object> extraClaims) {
-
+System.out.println(user.getId());
 
             return Jwts.builder()
                     .setClaims(extraClaims)

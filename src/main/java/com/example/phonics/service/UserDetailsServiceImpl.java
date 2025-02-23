@@ -28,7 +28,7 @@ public class UserDetailsServiceImpl implements UserDetailsService
 
         User user = userRepository.findUserById(Long.parseLong(id));
         new SimpleGrantedAuthority( user.getRole().name());
-        System.out.println(user);
+        System.out.println(user.getId());
         return  user;
 
     }
