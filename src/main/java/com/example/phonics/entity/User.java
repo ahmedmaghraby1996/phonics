@@ -32,13 +32,14 @@ public class User extends AuditableEntity implements UserDetails  {
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public User(String firstName, String lastName, String email, String password, Role role , boolean enabled) {
+    public User(Long id,String firstName, String lastName, String email, String password, Role role , boolean enabled) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.role = role;
         this.enabled = enabled;
+        this.id=id;
     }
 
     @Override
@@ -48,7 +49,7 @@ public class User extends AuditableEntity implements UserDetails  {
 
     @Override
     public String getUsername() {
-        return email;
+        return String.valueOf(id);
     }
 
     @Override
