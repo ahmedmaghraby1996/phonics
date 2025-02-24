@@ -25,7 +25,7 @@ public class Otp extends AuditableEntity {
     @Enumerated(EnumType.STRING)
     private OtpType otpType;
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     public User user;
 }
