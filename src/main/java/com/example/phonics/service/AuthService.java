@@ -86,6 +86,7 @@ public class AuthService {
             jwtToken = this.generateToken(user);
             user.setEnabled(true);
             userRepository.save(user);
+            otpRepository.delete(otp);
         } else throw new BadRequestException("Otp Expired");
 
         return new LoginRes(jwtToken);
